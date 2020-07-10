@@ -2,9 +2,10 @@ import React from "react";
 import { Button as B } from "baseui/button";
 
 const Button = (props) => {
-  const { onClick, children } = props;
+  const { onClick, children, disabled } = props;
   return (
     <B
+      disabled={disabled}
       onClick={onClick}
       size={"large"}
       overrides={{

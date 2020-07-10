@@ -47,7 +47,7 @@ const Home: React.FC = () => {
       </Head>
       <AppNavBar />
       <Grid gridMargins={[10, 20, 100]} align={ALIGNMENT.center}>
-        <Cell span={12} align={ALIGNMENT.center}>
+        <Cell span={12}>
           <Label1>Score:{currentScore}</Label1>
         </Cell>
         {current !== null ? (
