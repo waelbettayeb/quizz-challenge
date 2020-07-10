@@ -8,6 +8,7 @@ import { Button as B } from "baseui/button";
 import { Label1, Paragraph1 } from "baseui/typography";
 import { ButtonGroup, MODE } from "baseui/button-group";
 import Button from "@components/atoms/Button";
+import ChoicesGroup from "@components/molecules/ChoicesGroup";
 
 const Home: React.FC = () => {
   const [value, setValue] = React.useState(null);
@@ -55,27 +56,14 @@ const Home: React.FC = () => {
                 Question: {current + 1}/{questions.length}
               </Label1>
               <Paragraph1>{questions[current].text}</Paragraph1>
-              <ButtonGroup
-                mode={MODE.radio}
-                selected={value}
+              <ChoicesGroup
+                choices={questions[current].choises}
                 onClick={(_event, index) => {
                   setValue(index);
                 }}
+                selected={value}
                 disabled={disable}
-                overrides={{
-                  Root: {
-                    style: ({ $theme }) => {
-                      return {
-                        flexDirection: "column",
-                      };
-                    },
-                  },
-                }}
-              >
-                {questions[current].choises.map((d: string, index: number) => (
-                  <B>{d}</B>
-                ))}
-              </ButtonGroup>
+              />
             </Cell>
             <Cell span={12}>
               {isSubmited() ? (
