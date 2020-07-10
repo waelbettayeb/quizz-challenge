@@ -7,18 +7,22 @@ import {
 } from "src/models/QuestionJsonAdapter";
 
 export interface ISessionContext {
+  init: () => void;
   questions: Question[];
   submitAnswer: (number) => boolean | null;
   current: number;
   currentScore: number;
-  next: () => boolean;
+  goNext: () => boolean;
+  isSubmited: () => boolean;
 }
 export const SessionContext = React.createContext<ISessionContext>({
   questions: undefined,
   submitAnswer: undefined,
   current: 0,
   currentScore: 0,
-  next: () => undefined,
+  goNext: () => undefined,
+  isSubmited: () => undefined,
+  init: () => undefined,
 });
 
 export const useSession = () => {
@@ -37,8 +41,7 @@ export const SessionProvider: React.FC = ({ children }) => {
     setAnswers([]);
   };
   const submitAnswer = (answer: number) => {
-    if (current != null && answers[current] == undefined) {
-      alert(questions[current].getScore(answer));
+    if (current != null && !isSubmited()) {
       answers.push(answer);
       setCurrentScore(currentScore + questions[current].getScore(answer));
 
@@ -46,9 +49,12 @@ export const SessionProvider: React.FC = ({ children }) => {
     }
     return null;
   };
-  const next = () => {
-    if (!answers[current]) return false;
-    current === questions.length - 1
+  const isSubmited = () => {
+    return answers[current] !== undefined;
+  };
+  const goNext = () => {
+    if (!isSubmited()) return false;
+    current + 1 >= questions.length
       ? setCurrent(null)
       : setCurrent(current + 1);
     return !!current;
@@ -57,11 +63,13 @@ export const SessionProvider: React.FC = ({ children }) => {
   return (
     <SessionContext.Provider
       value={{
+        init,
         questions,
         submitAnswer,
         current,
         currentScore,
-        next,
+        goNext,
+        isSubmited,
       }}
     >
       {children}
