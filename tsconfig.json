@@ -35,6 +35,7 @@
       "@types": ["./types/index.ts"],
       "@assets/*": ["assets/*"],
       "@locale/*": ["locale/*"],
+      "@public/*": ["public/*"],
     },
   },
   "exclude": [
