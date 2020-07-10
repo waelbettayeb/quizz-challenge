@@ -4,9 +4,10 @@ import AppNavBar from "src/components/molecules/AppNavBar/AppNavBar";
 import { ALIGNMENT, BEHAVIOR, Cell, Grid } from "baseui/layout-grid";
 import { Radio, RadioGroup } from "baseui/radio";
 import { useSession } from "@hooks/Session";
-import { Button } from "baseui/button";
+import { Button as B } from "baseui/button";
 import { Label1, Paragraph1 } from "baseui/typography";
 import { ButtonGroup, MODE } from "baseui/button-group";
+import Button from "@components/atoms/Button";
 
 const Home: React.FC = () => {
   const [value, setValue] = React.useState(null);
@@ -20,6 +21,21 @@ const Home: React.FC = () => {
     isSubmited,
     init,
   } = useSession();
+
+  const initUI = () => {
+    init();
+    setValue(null);
+    setDisable(false);
+  };
+  const nextQuestion = () => {
+    goNext();
+    setValue(null);
+    setDisable(false);
+  };
+  const submit = () => {
+    submitAnswer(parseInt(value));
+    setDisable(true);
+  };
 
   return (
     <React.Fragment>
@@ -57,48 +73,15 @@ const Home: React.FC = () => {
                 }}
               >
                 {questions[current].choises.map((d: string, index: number) => (
-                  <Button>{d}</Button>
+                  <B>{d}</B>
                 ))}
               </ButtonGroup>
             </Cell>
             <Cell span={12}>
               {isSubmited() ? (
-                <Button
-                  onClick={() => {
-                    goNext();
-                    setValue(null);
-                    setDisable(false);
-                  }}
-                  kind="secondary"
-                  overrides={{
-                    BaseButton: {
-                      style: ({ $theme }) => {
-                        return {
-                          width: "100%",
-                        };
-                      },
-                    },
-                  }}
-                >
-                  تقدم
-                </Button>
+                <Button onClick={nextQuestion}>تقدم</Button>
               ) : (
-                <Button
-                  disabled={value === null || disable}
-                  onClick={() => {
-                    submitAnswer(parseInt(value));
-                    setDisable(true);
-                  }}
-                  overrides={{
-                    BaseButton: {
-                      style: ({ $theme }) => {
-                        return {
-                          width: "100%",
-                        };
-                      },
-                    },
-                  }}
-                >
+                <Button disabled={value === null || disable} onClick={submit}>
                   موافق
                 </Button>
               )}
@@ -106,25 +89,7 @@ const Home: React.FC = () => {
           </React.Fragment>
         ) : (
           <Cell span={12}>
-            <Button
-              onClick={() => {
-                init();
-                setValue(null);
-                setDisable(false);
-              }}
-              size={"large"}
-              overrides={{
-                BaseButton: {
-                  style: ({ $theme }) => {
-                    return {
-                      width: "100%",
-                    };
-                  },
-                },
-              }}
-            >
-              جرب كويزاً آخر
-            </Button>
+            <Button onClick={initUI}>جرب كويزاً آخر</Button>
           </Cell>
         )}
       </Grid>
