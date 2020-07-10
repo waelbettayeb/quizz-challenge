@@ -30,14 +30,13 @@ const ChoicesGroup = (props: Props) => {
             BaseButton: {
               style: ({ $theme }) => {
                 const getColor = (succes, warning, danger) => {
-                  console.log(selected, expectedAnswer());
                   if (index == expectedAnswer()) return succes;
                   else if (selected == index) return warning;
                   else return danger;
                 };
                 return {
                   outline: expectedAnswer()
-                    ? `${getColor(
+                    ? `10px${getColor(
                         $theme.colors.positive,
                         $theme.colors.warning,
                         $theme.colors.negative
