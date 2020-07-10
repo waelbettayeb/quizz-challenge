@@ -21,6 +21,7 @@ const Home: React.FC = () => {
     goNext,
     isSubmited,
     init,
+    expectedAnswer,
   } = useSession();
 
   const initUI = () => {
@@ -63,6 +64,7 @@ const Home: React.FC = () => {
                 }}
                 selected={value}
                 disabled={disable}
+                expectedAnswer={expectedAnswer}
               />
             </Cell>
             <Cell span={12}>

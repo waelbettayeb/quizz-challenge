@@ -4,6 +4,9 @@ export interface IQuestion {
 }
 
 export class Question implements IQuestion {
+  getExpectedAnswer() {
+    return this.expectedAnswer;
+  }
   text: string;
   choises: string[];
   private expectedAnswer: number;

@@ -4,10 +4,12 @@ import React from "react";
 
 interface Props extends Omit<ButtonGroupProps, "children"> {
   choices: string[];
+  expectedAnswer: () => number | null;
 }
 
 const ChoicesGroup = (props: Props) => {
-  const { choices } = props;
+  const { choices, expectedAnswer, selected } = props;
+
   return (
     <ButtonGroup
       {...props}
@@ -23,7 +25,32 @@ const ChoicesGroup = (props: Props) => {
       }}
     >
       {choices.map((value: string, index: number) => (
-        <Button>{value}</Button>
+        <Button
+          overrides={{
+            BaseButton: {
+              style: ({ $theme }) => {
+                const getColor = (succes, warning, danger) => {
+                  console.log(selected, expectedAnswer());
+                  if (index == expectedAnswer()) return succes;
+                  else if (selected == index) return warning;
+                  else return danger;
+                };
+                return {
+                  outline: expectedAnswer()
+                    ? `${getColor(
+                        $theme.colors.positive,
+                        $theme.colors.warning,
+                        $theme.colors.negative
+                      )} solid`
+                    : "inherit",
+                  width: "100%",
+                };
+              },
+            },
+          }}
+        >
+          {value}
+        </Button>
       ))}
     </ButtonGroup>
   );

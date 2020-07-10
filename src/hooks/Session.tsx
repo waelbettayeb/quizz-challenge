@@ -14,6 +14,7 @@ export interface ISessionContext {
   currentScore: number;
   goNext: () => boolean;
   isSubmited: () => boolean;
+  expectedAnswer?: () => number | null;
 }
 export const SessionContext = React.createContext<ISessionContext>({
   questions: undefined,
@@ -49,6 +50,9 @@ export const SessionProvider: React.FC = ({ children }) => {
     }
     return null;
   };
+  const expectedAnswer = () => {
+    return isSubmited() ? questions[current].getExpectedAnswer() : null;
+  };
   const isSubmited = () => {
     return answers[current] !== undefined;
   };
@@ -70,6 +74,7 @@ export const SessionProvider: React.FC = ({ children }) => {
         currentScore,
         goNext,
         isSubmited,
+        expectedAnswer,
       }}
     >
       {children}
